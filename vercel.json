@@ -1,6 +1,2 @@
-{
-  "functions": {
-    "api/webhook.js": { "runtime": "nodejs20.x" },
-    "api/notify.js": { "runtime": "nodejs20.x" }
-  }
-}
+{}
+
