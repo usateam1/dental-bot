@@ -1,18 +1,16 @@
-// Вызывается с сайта когда пациент оставляет отзыв
-// Отправляет уведомление в Telegram с кнопками
-
 const TG_TOKEN   = '8348564496:AAE-lfMiKRRPImPPG7bMIWxiPZo9sAvjmC4';
 const ADMIN_CHAT = '8571455593';
 
 async function tg(method, body) {
   const r = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/${method}`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
   });
   return r.json();
 }
 
-export default async function handler(req, res) {
-  // CORS
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -21,7 +19,6 @@ export default async function handler(req, res) {
 
   const { id, name, txt, svc, stars } = req.body;
   const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
-
   const text = `🦷 *Новый отзыв на сайте*\n\n👤 *${name}*\n${starStr}${svc ? ' • ' + svc : ''}\n\n"${txt}"`;
 
   await tg('sendMessage', {
@@ -37,4 +34,4 @@ export default async function handler(req, res) {
   });
 
   return res.status(200).json({ ok: true });
-}
+};
